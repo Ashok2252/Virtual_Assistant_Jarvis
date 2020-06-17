@@ -5,6 +5,10 @@ import speech_recognition as sr
 import webbrowser
 import os
 import smtplib
+import random
+import pyautogui
+import psutil
+
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -53,9 +57,20 @@ def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('your_email', 'your_password')
+    server.login('your_email', 'your_pass')
     server.sendmail('your_email', to, content)
     server.close()
+
+def screenshot():
+    img = pyautogui.screenshot()
+    img.save("D:\\ASHOK\\Projects\\Virtual_assis\\Screenshots\\ss.png")
+
+def cpu():
+    usage = str(psutil.cpu_percent())
+    speak('CPU is at' + usage)
+    battery = psutil.sensors_battery()
+    speak('Battery is approx')
+    speak(battery.percent)
 
 if __name__ == "__main__":
     wishMe()
@@ -72,6 +87,12 @@ if __name__ == "__main__":
             print(results)
             speak(results)
 
+        elif 'search in chrome' in query:
+            speak("What Should I Search ? ")
+            chromepath = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+            search = takeCommand().lower()
+            webbrowser.get(chromepath).open_new_tab(search+'.com')
+
         elif 'open youtube' in query:
             webbrowser.open("youtube.com")
 
@@ -87,8 +108,8 @@ if __name__ == "__main__":
         elif 'play music' in query:
             music_dir = 'D:\\Songs\\new songs'
             songs = os.listdir(music_dir)
-            print(songs)    
-            os.startfile(os.path.join(music_dir, songs[6]))
+            d = random.choice(songs)    
+            os.startfile(os.path.join(music_dir, d))
 
         elif 'the time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M")    
@@ -102,9 +123,9 @@ if __name__ == "__main__":
             codePath = "C:\\Windows\\System32\\calc.exe"
             os.startfile(codePath)
 
-#         elif 'open calendar' in query:
-#             codePath = "C:\\Users\\User\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
-#             os.startfile(codePath)
+        # elif 'open calendar' in query:
+        #     codePath = "C:\\Users\\User\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+        #     os.startfile(codePath)
 
         elif 'open Notepad' in query:
             cPath = "C:\\Users\\User\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Accessories\\Notepad"
@@ -122,13 +143,41 @@ if __name__ == "__main__":
             codePath = "C:\\Users\\User\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\System Tools\\This PC"
             os.startfile(codePath)
 
+        elif 'remember that' in query:
+            speak("What Shoud I remember ?")
+            data = takeCommand()
+            speak("you said me to remember that !" + data)
+            remember = open('data.txt','w')
+            remember.write(data)
+            remember.close()
+
+        elif 'do you know anything' in query:
+            remember = open('data.txt', 'r')
+            speak("you said me to remember that !" + remember.read())
+
         elif 'send email' in query:
             try:
                 speak("What should I say?")
                 content = takeCommand()
-                to = "ashokmali1999@gmail.com"    
+                to = "receipent_email"    
                 sendEmail(to, content)
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
-                speak("Sorry sir I am not able to send this email")  
+                speak("Sorry sI am not able to send this email") 
+
+        elif 'screenshot' in query:
+            screenshot()
+            speak("Screenshot has been successfully captured !") 
+
+        elif 'cpu' in query:
+            cpu()
+
+        elif 'shutdown' in query:
+            os.system("shutdown /s /t 1")
+
+        elif 'restart' in query:
+            os.system("shutdown /r /t 1")
+
+        elif 'offline' in query:
+            quit()
