@@ -53,8 +53,8 @@ def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
-    server.login('didyouknowthisfacts@gmail.com', 'Ashok.1999')
-    server.sendmail('didyouknowthisfacts@gmail.com', to, content)
+    server.login('your_email', 'your_password')
+    server.sendmail('your_email', to, content)
     server.close()
 
 if __name__ == "__main__":
@@ -102,9 +102,9 @@ if __name__ == "__main__":
             codePath = "C:\\Windows\\System32\\calc.exe"
             os.startfile(codePath)
 
-        elif 'open calendar' in query:
-            codePath = "C:\\Users\\User\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
-            os.startfile(codePath)
+#         elif 'open calendar' in query:
+#             codePath = "C:\\Users\\User\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+#             os.startfile(codePath)
 
         elif 'open Notepad' in query:
             cPath = "C:\\Users\\User\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Accessories\\Notepad"
@@ -131,4 +131,4 @@ if __name__ == "__main__":
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
-                speak("Sorry sI am not able to send this email")  
+                speak("Sorry sir I am not able to send this email")  
